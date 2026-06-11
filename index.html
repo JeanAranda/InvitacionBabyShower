@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Shower de Antonella 🐰</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600;700&display=swap');
+
+        @page { size: A4; margin: 0; }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fdfcfb 0%, #fce4ec 50%, #f3e5f5 100%);
+            color: #5c6b73;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-x: hidden;
+        }
+
+        /* === CANVAS DE PARTÍCULAS === */
+        #particles-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(6px);
+            border-radius: 40px 40px 30px 30px;
+            box-shadow: 0 20px 60px rgba(181,131,141,0.18), 0 4px 16px rgba(0,0,0,0.06);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* === HEADER === */
+        header {
+            background: linear-gradient(160deg, #e9d3db 0%, #f5c6d0 60%, #f8d7da 100%);
+            padding: 30px 20px 50px;
+            border-bottom-left-radius: 50% 35px;
+            border-bottom-right-radius: 50% 35px;
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 180px; height: 180px;
+            background: rgba(255,255,255,0.18);
+            border-radius: 50%;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 10px; left: -30px;
+            width: 120px; height: 120px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 50%;
+        }
+
+        .event-type {
+            font-family: 'Fredoka One', cursive;
+            font-size: 13pt;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #a06070;
+            margin: 0 0 8px 0;
+        }
+
+        /* === CONEJITA === */
+        .bunny-container {
+            margin: 5px auto 12px;
+            width: 150px;
+            height: auto;
+            animation: floatBunny 4s infinite ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+        .bunny-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            filter: drop-shadow(0 8px 18px rgba(181,100,120,0.25));
+        }
+
+        @keyframes floatBunny {
+            0%   { transform: translateY(0px) rotate(0deg); }
+            50%  { transform: translateY(-12px) rotate(1.5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 34pt;
+            color: #6d6875;
+            margin: 0 0 5px 0;
+            text-shadow: 0 2px 0 rgba(255,255,255,0.8);
+            position: relative; z-index: 2;
+        }
+
+        .parents {
+            font-size: 12pt;
+            font-style: italic;
+            color: #73b8b1;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative; z-index: 2;
+        }
+
+        /* === CONTENIDO === */
+        .content-box {
+            position: relative;
+            z-index: 2;
+            padding: 28px 28px 10px;
+        }
+
+        .baby-name {
+            font-family: 'Fredoka One', cursive;
+            font-size: 32pt;
+            color: #e29578;
+            margin-bottom: 2px;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { text-shadow: 0 0 8px rgba(226,149,120,0.3); }
+            50%  { text-shadow: 0 0 22px rgba(226,149,120,0.7), 0 0 40px rgba(226,149,120,0.3); }
+        }
+
+        .subtitle {
+            font-size: 12pt;
+            margin-top: 0;
+            color: #83c5be;
+            font-weight: 700;
+        }
+
+        /* === SECCIÓN TITLES === */
+        .section-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 17pt;
+            color: #b5838d;
+            margin: 28px 0 10px;
+            display: inline-block;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 55%;
+            height: 4px;
+            background: linear-gradient(90deg, #e29578, #f8d7da);
+            border-radius: 2px;
+            margin: 4px auto 0;
+        }
+
+        /* === COUNTDOWN === */
+        .countdown-container {
+            background: linear-gradient(135deg, #fff5f5, #fce4ec);
+            border: 2px solid #f8d7da;
+            border-radius: 24px;
+            padding: 16px 20px;
+            margin: 18px 0;
+            box-shadow: 0 6px 20px rgba(255,105,135,0.1);
+        }
+        .countdown-label {
+            font-size: 9pt;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            color: #b5838d;
+            font-weight: 700;
+        }
+        .countdown {
+            font-family: 'Fredoka One', cursive;
+            font-size: 21pt;
+            color: #e29578;
+            letter-spacing: 2px;
+        }
+        .countdown-units {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 4px;
+        }
+        .unit-box {
+            background: white;
+            border-radius: 16px;
+            padding: 10px 14px;
+            min-width: 68px;
+            box-shadow: 0 3px 10px rgba(226,149,120,0.15);
+        }
+        .unit-box .num {
+            font-family: 'Fredoka One', cursive;
+            font-size: 26pt;
+            color: #e29578;
+            line-height: 1;
+        }
+        .unit-box .lbl {
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #b5838d;
+            font-weight: 700;
+        }
+
+        /* === DETALLES === */
+        .details-box {
+            background: #fcf6f8;
+            border-radius: 20px;
+            padding: 20px 22px;
+            margin: 12px 0;
+            text-align: left;
+            font-size: 12pt;
+            line-height: 2;
+            border-left: 5px solid #e29578;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .details-box strong { color: #3d5a80; }
+
+        /* === MAPA === */
+        .map-container {
+            margin: 16px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid #f8d7da;
+            box-shadow: 0 4px 16px rgba(181,131,141,0.12);
+            height: 220px;
+        }
+        .map-container iframe { width: 100%; height: 100%; border: 0; }
+
+        /* === QR === */
+        .qr-box {
+            background: #fcf6f8;
+            border-radius: 20px;
+            padding: 22px;
+            margin: 12px 0;
+            border: 1.5px dashed #e29578;
+        }
+        .qr-placeholder {
+            width: 130px; height: 130px;
+            background: #fff;
+            margin: 12px auto;
+            border: 2px dashed #b5838d;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10pt;
+            color: #bbb;
+        }
+
+        /* === BOTONES === */
+        .btn {
+            display: inline-block;
+            background: #e29578;
+            color: white;
+            padding: 13px 26px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 12pt;
+            text-decoration: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(226,149,120,0.4);
+            margin: 10px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:hover {
+            transform: scale(1.04) translateY(-2px);
+            box-shadow: 0 8px 20px rgba(226,149,120,0.5);
+        }
+        .btn-wa { background: #25D366; box-shadow: 0 5px 15px rgba(37,211,102,0.35); }
+        .btn-wa:hover { box-shadow: 0 8px 20px rgba(37,211,102,0.5); }
+
+        /* === FORMULARIO === */
+        .rsvp-form {
+            background: #fafafa;
+            border: 1.5px solid #f0e0e5;
+            border-radius: 20px;
+            padding: 22px 20px;
+            margin-top: 16px;
+            text-align: left;
+        }
+        .form-title {
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #6d6875;
+            font-size: 12pt;
+        }
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-size: 11pt;
+            color: #4a4a4a;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #e8d0d8;
+            border-radius: 10px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 11pt;
+            color: #444;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #e29578;
+            box-shadow: 0 0 0 3px rgba(226,149,120,0.15);
+        }
+        .form-group textarea { resize: vertical; min-height: 70px; }
+        .btn-submit {
+            width: 100%;
+            margin-top: 6px;
+            background: #b5838d;
+            box-shadow: 0 5px 15px rgba(181,131,141,0.35);
+        }
+        .btn-submit:hover { box-shadow: 0 8px 20px rgba(181,131,141,0.5); }
+
+        /* === TOAST / CONFIRMACIÓN === */
+        #toast {
+            display: none;
+            background: linear-gradient(135deg, #06d6a0, #05b386);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 16px;
+            margin: 14px 0 0;
+            font-weight: 700;
+            font-size: 12pt;
+            box-shadow: 0 4px 14px rgba(6,214,160,0.35);
+            animation: fadeIn 0.4s ease;
+        }
+        #toast.error {
+            background: linear-gradient(135deg, #e07070, #c05060);
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* === LISTA CONFIRMADOS === */
+        #confirmados-lista {
+            display: none;
+            background: #f0faf7;
+            border: 1.5px solid #b2e8d9;
+            border-radius: 16px;
+            padding: 16px 18px;
+            margin-top: 16px;
+            text-align: left;
+        }
+        #confirmados-lista h4 {
+            margin: 0 0 10px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 13pt;
+            color: #06b38a;
+        }
+        .confirmado-item {
+            padding: 7px 0;
+            border-bottom: 1px dashed #c8efe5;
+            font-size: 11pt;
+            display: flex;
+            justify-content: space-between;
+        }
+        .confirmado-item:last-child { border-bottom: none; }
+        .confirmado-item .nombre { font-weight: 700; color: #3d7a6a; }
+        .confirmado-item .asistentes { color: #7ab8a8; font-size: 10pt; }
+
+        /* === FOOTER === */
+        footer {
+            margin-top: 36px;
+            font-size: 10pt;
+            color: #a0a0a0;
+            padding: 18px 0 24px;
+            border-top: 1px dashed #e8d0d8;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+
+<div class="container">
+
+    <header>
+        <div class="event-type">✨ ¡Estás Invitado! ✨</div>
+
+        <div class="bunny-container">
+            <img id="bunny-img" src="/bunny.png" alt="Conejita del Baby Shower">
+        </div>
+
+        <h1>Baby Shower</h1>
+        <div class="parents">De la mano de sus papis: Raquel y Fredy 💕</div>
+    </header>
+
+    <div class="content-box">
+
+        <div class="baby-name">Antonella</div>
+        <p class="subtitle">¡Esperamos con ansias su llegada! 🌸</p>
+
+        <!-- Cuenta Regresiva -->
+        <div class="countdown-container">
+            <div class="countdown-label">🎀 Faltan solamente…</div>
+            <div class="countdown-units">
+                <div class="unit-box"><div class="num" id="cd-days">--</div><div class="lbl">Días</div></div>
+                <div class="unit-box"><div class="num" id="cd-hours">--</div><div class="lbl">Horas</div></div>
+                <div class="unit-box"><div class="num" id="cd-mins">--</div><div class="lbl">Min</div></div>
+                <div class="unit-box"><div class="num" id="cd-secs">--</div><div class="lbl">Seg</div></div>
+            </div>
+        </div>
+
+        <!-- Detalles -->
+        <div class="section-title">¿Cuándo y Dónde?</div>
+        <div class="details-box">
+            📅 <strong>Fecha:</strong> Sábado, 20 de Junio de 2026<br>
+            ⏰ <strong>Hora:</strong> 18:00 hrs (6:00 PM)<br>
+            📍 <strong>Lugar:</strong> Salón de eventos "La Victoria"
+        </div>
+
+        <!-- Mapa -->
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1913.5404519426972!2d-71.4990564!3d-16.420717!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91424b6e3a9cd347%3A0xff94a2fdc3453ecf!2zU2Fsw7NuIGRlIGV2ZW50b3MgIiDNrs2uIExhIFZpY3RvcmlhIM2uza4i!5e0!3m2!1ses-419!2spe!4v1781145644648!5m2!1ses-419!2spe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <!-- Muestra de cariño / QR -->
+        <div class="section-title">Muestra de Cariño 🎁</div>
+        <div class="qr-box">
+            <p style="margin: 0 0 8px; font-size: 11pt;">Si deseas hacernos un presente, te dejamos nuestro código de transferencia:</p>
+            <div class="qr-placeholder">[ Tu QR aquí ]</div>
+            <small style="color: #a0a0a0;">(Reemplaza con tu QR de Yape / Plin)</small>
+        </div>
+
+        <!-- Confirmar asistencia -->
+        <div class="section-title">Confirmar Asistencia 🐣</div>
+
+        <a href="https://wa.me/51929476382?text=Hola%20Raquel%20y%20Fredy%2C%20confirmo%20mi%20asistencia%20al%20Baby%20Shower%20de%20Antonella!" class="btn btn-wa" target="_blank">
+            📱 Confirmar por WhatsApp
+        </a>
+
+        <div class="rsvp-form">
+            <div class="form-title">🌸 O regístrate aquí:</div>
+
+            <div class="form-group">
+                <label for="nombre">Nombre Completo *</label>
+                <input type="text" id="nombre" placeholder="Ej. María García" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="asistentes">¿Cuántos asisten?</label>
+                <select id="asistentes">
+                    <option value="1">1 persona</option>
+                    <option value="2">2 personas</option>
+                    <option value="3">3 personas</option>
+                    <option value="4">4 o más personas</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="mensaje">Mensaje para Raquel y Fredy (opcional)</label>
+                <textarea id="mensaje" placeholder="Ej. ¡Los queremos mucho! 💕"></textarea>
+            </div>
+
+            <button type="button" class="btn btn-submit" onclick="confirmarAsistencia()">
+                ✅ Confirmar Asistencia
+            </button>
+
+            <div id="toast"></div>
+        </div>
+
+        <!-- Lista de confirmados -->
+        <div id="confirmados-lista">
+            <h4>🎉 Ya confirmaron asistencia:</h4>
+            <div id="confirmados-items"></div>
+        </div>
+
+        <footer>
+            Te esperamos para compartir este momento tan especial 💖<br>
+            <strong>Raquel & Fredy</strong>
+        </footer>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// ANIMACIÓN DE PARTÍCULAS (pétalos / estrellas / corazones)
+// ============================================================
+(function() {
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    const particles = [];
+    const EMOJIS = ['🌸','✨','💕','🌷','⭐','💖','🎀'];
+    const COUNT = 22;
+
+    function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function rand(a, b) { return Math.random() * (b - a) + a; }
+
+    function makeParticle() {
+        return {
+            x: rand(0, W),
+            y: rand(-80, H),
+            vy: rand(0.4, 1.2),
+            vx: rand(-0.5, 0.5),
+            size: rand(14, 28),
+            emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
+            angle: rand(0, Math.PI * 2),
+            va: rand(-0.015, 0.015),
+            alpha: rand(0.4, 0.9)
+        };
+    }
+
+    for (let i = 0; i < COUNT; i++) particles.push(makeParticle());
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (const p of particles) {
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.font = p.size + 'px serif';
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            ctx.fillText(p.emoji, -p.size / 2, p.size / 2);
+            ctx.restore();
+
+            p.y += p.vy;
+            p.x += p.vx;
+            p.angle += p.va;
+
+            if (p.y > H + 40) {
+                p.y = -60;
+                p.x = rand(0, W);
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
+// ============================================================
+// CUENTA REGRESIVA
+// ============================================================
+function updateCountdown() {
+    const target = new Date("Jun 20, 2026 18:00:00").getTime();
+    const now    = Date.now();
+    const dist   = target - now;
+
+    if (dist <= 0) {
+        document.getElementById('cd-days').textContent  = '0';
+        document.getElementById('cd-hours').textContent = '0';
+        document.getElementById('cd-mins').textContent  = '0';
+        document.getElementById('cd-secs').textContent  = '0';
+        return;
+    }
+
+    const d = Math.floor(dist / 86400000);
+    const h = Math.floor((dist % 86400000) / 3600000);
+    const m = Math.floor((dist % 3600000)  / 60000);
+    const s = Math.floor((dist % 60000)    / 1000);
+
+    document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ============================================================
+// FORMULARIO DE ASISTENCIA
+// ============================================================
+const STORAGE_KEY = 'bs_antonella_confirmados';
+
+function getConfirmados() {
+    try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    } catch(e) { return []; }
+}
+
+function saveConfirmados(lista) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+}
+
+function mostrarToast(msg, isError) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = isError ? 'error' : '';
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 5000);
+}
+
+function confirmarAsistencia() {
+    const nombre     = document.getElementById('nombre').value.trim();
+    const asistentes = document.getElementById('asistentes').value;
+    const mensaje    = document.getElementById('mensaje').value.trim();
+
+    if (!nombre) {
+        mostrarToast('⚠️ Por favor ingresa tu nombre para confirmar.', true);
+        document.getElementById('nombre').focus();
+        return;
+    }
+
+    const confirmados = getConfirmados();
+
+    // Verificar duplicado
+    const existe = confirmados.find(c => c.nombre.toLowerCase() === nombre.toLowerCase());
+    if (existe) {
+        mostrarToast('✅ ' + nombre + ', ¡ya estás confirmado(a)! Te esperamos 🎀', false);
+        renderConfirmados();
+        return;
+    }
+
+    const nuevo = {
+        nombre,
+        asistentes,
+        mensaje,
+        fecha: new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' })
+    };
+
+    confirmados.push(nuevo);
+    saveConfirmados(confirmados);
+
+    // Limpiar formulario
+    document.getElementById('nombre').value   = '';
+    document.getElementById('asistentes').value = '1';
+    document.getElementById('mensaje').value  = '';
+
+    mostrarToast('🎉 ¡Gracias ' + nombre + '! Tu asistencia fue confirmada 💕', false);
+    renderConfirmados();
+}
+
+function renderConfirmados() {
+    const lista = getConfirmados();
+    const cont  = document.getElementById('confirmados-lista');
+    const items = document.getElementById('confirmados-items');
+
+    if (lista.length === 0) {
+        cont.style.display = 'none';
+        return;
+    }
+
+    cont.style.display = 'block';
+    items.innerHTML = lista.map(c => `
+        <div class="confirmado-item">
+            <span class="nombre">🌸 ${c.nombre}</span>
+            <span class="asistentes">${c.asistentes} persona${c.asistentes > 1 ? 's' : ''}</span>
+        </div>
+    `).join('');
+}
+
+// Mostrar confirmados al cargar
+renderConfirmados();
+</script>
+</body>
+</html>
